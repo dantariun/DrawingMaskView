@@ -50,7 +50,7 @@ afterEvaluate{
 
                 groupId = 'com.github.dantariun'
                 artifactId = 'DrawingMaskView'
-                version = '1.4'
+                version = '1.0'
             }
             debug(MavenPublication) {
                 // Applies the component for the debug build variant.
@@ -58,7 +58,7 @@ afterEvaluate{
 
                 groupId = 'com.github.dantariun'
                 artifactId = 'DrawingMaskView'
-                version = '1.4'
+                version = '1.0'
             }
         }
     }

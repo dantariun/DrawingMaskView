@@ -11,12 +11,15 @@
 ### Gradle
 
 ```gradle
- repositories {
-    maven { url "https://jitpack.io" }
- }
+allprojects {
+  repositories {
+    ...
+    maven { url 'https://jitpack.io' }
+  }
+}
 
  dependencies {
-    implementation 'com.github.dantariun:DrawingMaskView:1.0'
+    implementation 'com.github.dantariun:DrawingMaskView:x.x.x'
  }
 ```
 

@@ -5,10 +5,12 @@
         <attr name="shape_type" format="dimension">
             <enum name="circle" value="0" />
             <enum name="rect" value="1" />
+            <enum name="rect_round" value="2" />
         </attr>
         <attr name="radius_size" format="reference|integer"/>
         <attr name="shape_width" format="reference|integer"/>
         <attr name="shape_height" format="reference|integer"/>
+        <attr name="rect_round" format="reference|integer"/>
         <attr name="align" format="dimension">
             <enum name="center" value="0" />
             <enum name="top" value="1" />
@@ -19,6 +21,17 @@
             <enum name="top_right" value="6" />
             <enum name="bottom_left" value="7" />
             <enum name="bottom_right" value="8" />
+        </attr>
+        <attr name="shadow_mode" format="dimension">
+            <enum name="clear" value="0" />
+            <enum name="source" value="1" />
+            <enum name="source_over" value="2" />
+            <enum name="source_in" value="3" />
+            <enum name="source_out" value="4" />
+            <enum name="destination" value="5" />
+            <enum name="destination_over" value="6" />
+            <enum name="destination_in" value="7" />
+            <enum name="destination_out" value="8" />
         </attr>
     </declare-styleable>
 </resources>

@@ -3,6 +3,7 @@ package com.pepperkim.drawingmaskview
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
+import android.graphics.Paint.Align
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
@@ -17,10 +18,13 @@ class DrawingMaskView constructor(context: Context, attrs: AttributeSet?) : View
     private var shapeWidth by Delegates.notNull<Int>()
     private var shapeHeight by Delegates.notNull<Int>()
     private var shapeAlign by Delegates.notNull<Int>()
+    private var rectRound by Delegates.notNull<Int>()
+    private var shadowMode by Delegates.notNull<Int>()
 
     enum class Shapes(val data:Int){
         circle(0),
-        rect(1);
+        rect(1),
+        rect_round(2);
 
         companion object {
             fun dataOf(data: Int, defaultValue: Shapes = circle) = Aligns.values().firstOrNull { it.data == data } ?: defaultValue
@@ -43,6 +47,22 @@ class DrawingMaskView constructor(context: Context, attrs: AttributeSet?) : View
         }
     }
 
+    enum class ShadowModes(val data:Int){
+        Clear(0),
+        Source(1),
+        SourceOver(2),
+        SourceIn(3),
+        SourceOut(4),
+        Destination(5),
+        DestinationOver(6),
+        DestinationIn(7),
+        DestinationOut(8);
+
+        companion object {
+            fun dataOf(data: Int, defaultValue: ShadowModes = DestinationOut) = Aligns.values().firstOrNull { it.data == data } ?: defaultValue
+        }
+    }
+
     init {
         val a = context.obtainStyledAttributes(attrs, R.styleable.DrawingMaskView)
         shapeType = a.getInt(R.styleable.DrawingMaskView_shape_type, 0)
@@ -51,6 +71,47 @@ class DrawingMaskView constructor(context: Context, attrs: AttributeSet?) : View
         shapeWidth = a.getInt(R.styleable.DrawingMaskView_shape_width, 100)
         shapeHeight = a.getInt(R.styleable.DrawingMaskView_shape_height, 100)
         shapeAlign = a.getInt(R.styleable.DrawingMaskView_align, 0)
+        rectRound = a.getInt(R.styleable.DrawingMaskView_rect_round, 10)
+        shadowMode = a.getInt(R.styleable.DrawingMaskView_shadow_mode, 8)
+    }
+
+    fun changeAlign(align:Aligns){
+        shapeAlign = align.data
+        this.invalidate()
+    }
+
+    fun changeShapeType(type:Shapes){
+        shapeType = type.data
+        this.invalidate()
+    }
+
+    fun changeShadowColor(color:Int){
+        shadowColor = color
+        this.invalidate()
+    }
+    fun changeCircleRadius(radius:Int){
+       shapeRadius = radius
+       this.invalidate()
+    }
+
+    fun changeShapeWidth(width:Int){
+       shapeWidth = width
+       this.invalidate()
+    }
+
+    fun changeShapeHeight(height:Int){
+       shapeHeight = height
+       this.invalidate()
+    }
+
+    fun changeRectRound(round:Int){
+       rectRound = round
+       this.invalidate()
+    }
+
+    fun changePorterDuffXfermode(mode:ShadowModes){
+        shadowMode = mode.data
+        this.invalidate()
     }
 
     @SuppressLint("DrawAllocation")
@@ -66,58 +127,10 @@ class DrawingMaskView constructor(context: Context, attrs: AttributeSet?) : View
 
         when(shapeType){
             Shapes.rect.data ->{
-                var top = 0f
-                var left = 0f
-                var right = 0f
-                var bottom = 0f
-                when(shapeAlign){
-                    Aligns.center.data ->{
-
-                    }
-                    Aligns.top.data ->{
-                        left = (this.width/2).toFloat() - (shapeWidth/2)
-                        right = left + shapeWidth
-                        bottom = shapeHeight.toFloat()
-                    }
-                    Aligns.top_left.data ->{
-                        right = shapeWidth.toFloat()
-                        bottom = shapeHeight.toFloat()
-                    }
-                    Aligns.top_right.data ->{
-                        left = (this.width - shapeWidth).toFloat()
-                        right = this.width.toFloat()
-                        bottom = shapeHeight.toFloat()
-                    }
-                    Aligns.left.data ->{
-                        top = ((this.height/2) - (shapeHeight/2)).toFloat()
-                        right = shapeWidth.toFloat()
-                        bottom = ((this.height/2) + (shapeHeight/2)).toFloat()
-                    }
-                    Aligns.right.data ->{
-                        top = ((this.height/2) - (shapeHeight/2)).toFloat()
-                        left = (this.width - shapeWidth).toFloat()
-                        right = this.width.toFloat()
-                        bottom = ((this.height/2) + (shapeHeight/2)).toFloat()
-                    }
-                    Aligns.bottom.data ->{
-                        top = (this.height - shapeHeight).toFloat()
-                        left = (this.width/2).toFloat() - (shapeWidth/2)
-                        right = left + shapeWidth
-                        bottom = this.height.toFloat()
-                    }
-                    Aligns.bottom_left.data ->{
-                        top = (this.height - shapeHeight).toFloat()
-                        right = left + shapeWidth
-                        bottom = this.height.toFloat()
-                    }
-                    Aligns.bottom_right.data ->{
-                        top = (this.height - shapeHeight).toFloat()
-                        left = (this.width - shapeWidth).toFloat()
-                        right = this.width.toFloat()
-                        bottom = this.height.toFloat()
-                    }
-                }
-                canvasForMask.drawRect(left, top, right, bottom, paint1)
+                canvasForMask.drawRect(getRectAlignPoint(), paint1)
+            }
+            Shapes.rect_round.data ->{
+                canvasForMask.drawRoundRect(getRectAlignPoint(),rectRound.toFloat(), rectRound.toFloat(), paint1)
             }
             Shapes.circle.data->{
                 var circleX = 0f
@@ -171,12 +184,83 @@ class DrawingMaskView constructor(context: Context, attrs: AttributeSet?) : View
         resultCanvas.drawColor(shadowColor)
         val paint2 = Paint()
         paint2.isFilterBitmap = false
-        paint2.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OUT)
+
+        when(shadowMode){
+            ShadowModes.Clear.data ->{ paint2.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
+            ShadowModes.Source.data ->{ paint2.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC) }
+            ShadowModes.SourceOver.data ->{ paint2.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_OVER) }
+            ShadowModes.SourceIn.data ->{ paint2.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN) }
+            ShadowModes.SourceOut.data ->{ paint2.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_OUT) }
+            ShadowModes.Destination.data ->{ paint2.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST) }
+            ShadowModes.DestinationOver.data ->{ paint2.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OVER) }
+            ShadowModes.DestinationIn.data ->{ paint2.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_IN) }
+            ShadowModes.DestinationOut.data ->{ paint2.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OUT) }
+        }
+
         resultCanvas.drawBitmap(mask, 0f, 0f, paint2)
         paint2.xfermode = null
 
         canvas.drawBitmap(result, 0f, 0f, null)
 
         super.onDraw(canvas)
+    }
+
+    private fun getRectAlignPoint():RectF{
+        var top = 0f
+        var left = 0f
+        var right = 0f
+        var bottom = 0f
+        when(shapeAlign){
+            Aligns.center.data ->{
+                top = ((this.height/2) - (shapeHeight/2)).toFloat()
+                left = (this.width/2).toFloat() - (shapeWidth/2)
+                right = left + shapeWidth
+                bottom = ((this.height/2) + (shapeHeight/2)).toFloat()
+            }
+            Aligns.top.data ->{
+                left = (this.width/2).toFloat() - (shapeWidth/2)
+                right = left + shapeWidth
+                bottom = shapeHeight.toFloat()
+            }
+            Aligns.top_left.data ->{
+                right = shapeWidth.toFloat()
+                bottom = shapeHeight.toFloat()
+            }
+            Aligns.top_right.data ->{
+                left = (this.width - shapeWidth).toFloat()
+                right = this.width.toFloat()
+                bottom = shapeHeight.toFloat()
+            }
+            Aligns.left.data ->{
+                top = ((this.height/2) - (shapeHeight/2)).toFloat()
+                right = shapeWidth.toFloat()
+                bottom = ((this.height/2) + (shapeHeight/2)).toFloat()
+            }
+            Aligns.right.data ->{
+                top = ((this.height/2) - (shapeHeight/2)).toFloat()
+                left = (this.width - shapeWidth).toFloat()
+                right = this.width.toFloat()
+                bottom = ((this.height/2) + (shapeHeight/2)).toFloat()
+            }
+            Aligns.bottom.data ->{
+                top = (this.height - shapeHeight).toFloat()
+                left = (this.width/2).toFloat() - (shapeWidth/2)
+                right = left + shapeWidth
+                bottom = this.height.toFloat()
+            }
+            Aligns.bottom_left.data ->{
+                top = (this.height - shapeHeight).toFloat()
+                right = left + shapeWidth
+                bottom = this.height.toFloat()
+            }
+            Aligns.bottom_right.data ->{
+                top = (this.height - shapeHeight).toFloat()
+                left = (this.width - shapeWidth).toFloat()
+                right = this.width.toFloat()
+                bottom = this.height.toFloat()
+            }
+        }
+
+        return RectF(left, top,  right, bottom)
     }
 }

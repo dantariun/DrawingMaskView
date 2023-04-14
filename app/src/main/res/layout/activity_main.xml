@@ -6,19 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.appcompat.widget.AppCompatImageView
+        android:src="@drawable/free"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 
     <com.pepperkim.drawingmaskview.DrawingMaskView
-        app:shape_type="circle"
+        android:id="@+id/maskView"
+        app:shape_type="rect_round"
         app:align="center"
+        app:shadow_mode="destination_out"
+        app:shadow_color="@color/black"
+        app:radius_size="300"
+        app:shape_width="500"
+        app:shape_height="500"
+        app:rect_round="100"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    <Button
+        android:id="@+id/buttonTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:text="test"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

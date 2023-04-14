@@ -5,7 +5,7 @@
 
 |            circle            |         rect          |         rect_round          |
 |:----------------------------:|:---------------------:|:---------------------------:|
-| ![](arts/capture_circle.jpg) | ![](capture_rect.jpg) | ![](capture_rect_round.jpg) |
+| ![](arts/capture_circle.jpg) | ![](arts/capture_rect.jpg) | ![](arts/capture_rect_round.jpg) |
 
 
 ### Gradle

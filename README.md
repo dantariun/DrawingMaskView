@@ -39,14 +39,21 @@ allprojects {
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 ```
+<br>
 
+``` kotlin
+    val mask:DrawingMaskView = findViewById(R.id.maskView)
+    mask.changeCircleRadius(100) // px
+    mask.changeShapeType(DrawingMaskView.Shapes.circle.data) // int
+```
+<br>
 - Property
 
 |type 	| data type | value | description	|
 |---	|---		|---	|---			|
 |shape_type|dimension|circle, rect, rect_round|default:circle|
 | align | dimension | center, top, bottom, left, right, top_left, top_right, bottom_left, bottom_right | default : center |
-| shasow_mode | dimension | clear, source, source_over, source_in, source_out, destination, destination_over, destination_in, destination_out | defalut : destination_out|
+| shasow_mode | dimension | clear, dst_in, dst_out | defalut : dst_out|
 |shadow_color| int | shadow color | default : Color.BLACK |
 |radius_size| int | circle radius size | default : 100 |
 |shape_width| int | rect width size | default : 100 |
@@ -55,14 +62,14 @@ allprojects {
 
 - Method
 
-|function |
-|---|
-|**changeAlign**(align:Aligns)|
-|**changeShapeType**(type:Shapes)|
-|**changePorterDuffXfermode**(mode:ShadowModes)|
-|**changeShadowColor**(color:Int)|
-|**changeCircleRadius**(radius:Int)|
-|**changeShapeWidth**(width:Int)|
-|**changeShapeHeight**(height:Int)|
-|**changeRectRound**(round:Int)|
+| function                                       |
+|------------------------------------------------|
+| **changeAlign**(align:Aligns.item.data)                  |
+| **changeShapeType**(type:Shapes.item.data)     |
+| **changePorterDuffXfermode**(mode:ShadowModes.item.data) |
+| **changeShadowColor**(color:Int)               |
+| **changeCircleRadius**(radius:Int)             |
+| **changeShapeWidth**(width:Int)                |
+| **changeShapeHeight**(height:Int)              |
+| **changeRectRound**(round:Int)                 |
 

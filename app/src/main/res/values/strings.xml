@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">DrawingMaskView</string>
+    <string name="confirm">SELECT</string>
+    <string name="cancel">CANCEL</string>
 </resources>

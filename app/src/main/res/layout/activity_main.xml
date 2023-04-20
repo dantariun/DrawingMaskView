@@ -8,29 +8,224 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:src="@drawable/free"
+        android:scaleType="fitXY"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
     <com.pepperkim.drawingmaskview.DrawingMaskView
         android:id="@+id/maskView"
-        app:shape_type="rect_round"
-        app:align="center"
-        app:shadow_mode="destination_out"
-        app:shadow_color="@color/black"
-        app:radius_size="300"
-        app:shape_width="500"
-        app:shape_height="500"
-        app:rect_round="100"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <Button
-        android:id="@+id/buttonTest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        android:text="test"
+        android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintBottom_toTopOf="@+id/areaController"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/areaController"
+        android:background="@color/white"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/maskView">
+
+        <LinearLayout
+            android:id="@+id/areaTopLeft"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/areaTopRight">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="radius"/>
+
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/seekBarRadius"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/areaTopRight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/areaTopLeft">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="rect_w"/>
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/seekBarRectW"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/areaBottomLeft"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/areaTopLeft"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/areaTopRight">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="corner"/>
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/seekBarRectCorner"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/areaBottomRight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/areaTopRight"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/areaTopLeft">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="rect_h"/>
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/seekBarRectH"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/areaSpinnerTopLeft"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toStartOf="@+id/areaSpinnerTopRight"
+            app:layout_constraintTop_toBottomOf="@+id/areaBottomLeft"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textShapes"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="Shape : "/>
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinnerShapes"
+                android:background="@drawable/bg_spinner"
+                android:layout_width="match_parent"
+                android:layout_marginEnd="10dp"
+                android:layout_height="25dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/areaSpinnerTopRight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toEndOf="@+id/areaSpinnerTopLeft"
+            app:layout_constraintTop_toBottomOf="@+id/areaBottomLeft"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textAlign"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="Align : "/>
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinnerAlign"
+                android:background="@drawable/bg_spinner"
+                android:layout_width="match_parent"
+                android:layout_marginEnd="10dp"
+                android:layout_height="25dp"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/areaSpinnerBottomLeft"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toStartOf="@+id/areaSpinnerBottomRight"
+            app:layout_constraintTop_toBottomOf="@+id/areaSpinnerTopLeft"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textMode"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="mode : "/>
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinnerDST"
+                android:background="@drawable/bg_spinner"
+                android:layout_width="match_parent"
+                android:layout_marginEnd="10dp"
+                android:layout_height="25dp"/>
+
+        </LinearLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/areaSpinnerBottomRight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toEndOf="@+id/areaSpinnerBottomLeft"
+            app:layout_constraintTop_toBottomOf="@+id/areaSpinnerTopRight"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textColor"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="color : "/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_rect_stoke"
+                android:padding="3dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textColor"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/selectedColor"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@color/black"
+                    />
+            </RelativeLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

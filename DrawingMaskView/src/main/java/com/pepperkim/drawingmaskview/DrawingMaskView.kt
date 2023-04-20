@@ -12,14 +12,14 @@ import kotlin.properties.Delegates
 @SuppressLint("Recycle")
 class DrawingMaskView constructor(context: Context, attrs: AttributeSet?) : View(context, attrs) {
 
-    private var shapeType by Delegates.notNull<Int>()
-    private var shadowColor by Delegates.notNull<Int>()
-    private var shapeRadius by Delegates.notNull<Int>()
-    private var shapeWidth by Delegates.notNull<Int>()
-    private var shapeHeight by Delegates.notNull<Int>()
-    private var shapeAlign by Delegates.notNull<Int>()
-    private var rectRound by Delegates.notNull<Int>()
-    private var shadowMode by Delegates.notNull<Int>()
+    var shapeType by Delegates.notNull<Int>()
+    var shadowColor by Delegates.notNull<Int>()
+    var shapeRadius by Delegates.notNull<Int>()
+    var shapeWidth by Delegates.notNull<Int>()
+    var shapeHeight by Delegates.notNull<Int>()
+    var shapeAlign by Delegates.notNull<Int>()
+    var rectRound by Delegates.notNull<Int>()
+    var shadowMode by Delegates.notNull<Int>()
 
     enum class Shapes(val data:Int){
         circle(0),
@@ -49,17 +49,11 @@ class DrawingMaskView constructor(context: Context, attrs: AttributeSet?) : View
 
     enum class ShadowModes(val data:Int){
         Clear(0),
-        Source(1),
-        SourceOver(2),
-        SourceIn(3),
-        SourceOut(4),
-        Destination(5),
-        DestinationOver(6),
-        DestinationIn(7),
-        DestinationOut(8);
+        DstIn(1),
+        DstOut(2);
 
         companion object {
-            fun dataOf(data: Int, defaultValue: ShadowModes = DestinationOut) = Aligns.values().firstOrNull { it.data == data } ?: defaultValue
+            fun dataOf(data: Int, defaultValue: ShadowModes = DstOut) = Aligns.values().firstOrNull { it.data == data } ?: defaultValue
         }
     }
 
@@ -75,13 +69,13 @@ class DrawingMaskView constructor(context: Context, attrs: AttributeSet?) : View
         shadowMode = a.getInt(R.styleable.DrawingMaskView_shadow_mode, 8)
     }
 
-    fun changeAlign(align:Aligns){
-        shapeAlign = align.data
+    fun changeAlign(align:Int){
+        shapeAlign = align
         this.invalidate()
     }
 
-    fun changeShapeType(type:Shapes){
-        shapeType = type.data
+    fun changeShapeType(type:Int){
+        shapeType = type
         this.invalidate()
     }
 
@@ -109,8 +103,8 @@ class DrawingMaskView constructor(context: Context, attrs: AttributeSet?) : View
        this.invalidate()
     }
 
-    fun changePorterDuffXfermode(mode:ShadowModes){
-        shadowMode = mode.data
+    fun changePorterDuffXfermode(mode:Int){
+        shadowMode = mode
         this.invalidate()
     }
 
@@ -187,14 +181,8 @@ class DrawingMaskView constructor(context: Context, attrs: AttributeSet?) : View
 
         when(shadowMode){
             ShadowModes.Clear.data ->{ paint2.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
-            ShadowModes.Source.data ->{ paint2.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC) }
-            ShadowModes.SourceOver.data ->{ paint2.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_OVER) }
-            ShadowModes.SourceIn.data ->{ paint2.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN) }
-            ShadowModes.SourceOut.data ->{ paint2.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_OUT) }
-            ShadowModes.Destination.data ->{ paint2.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST) }
-            ShadowModes.DestinationOver.data ->{ paint2.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OVER) }
-            ShadowModes.DestinationIn.data ->{ paint2.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_IN) }
-            ShadowModes.DestinationOut.data ->{ paint2.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OUT) }
+            ShadowModes.DstIn.data ->{ paint2.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_IN) }
+            ShadowModes.DstOut.data ->{ paint2.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OUT) }
         }
 
         resultCanvas.drawBitmap(mask, 0f, 0f, paint2)

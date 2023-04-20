@@ -21,6 +21,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -33,7 +37,7 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.core:core-ktx:1.10.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     testImplementation 'junit:junit:4.13.2'
@@ -49,7 +53,7 @@ afterEvaluate{
 
                 groupId = 'com.github.dantariun'
                 artifactId = 'DrawingMaskView'
-                version = '1.0.1'
+                version = '1.0.2'
             }
             debug(MavenPublication) {
                 // Applies the component for the debug build variant.
@@ -57,7 +61,7 @@ afterEvaluate{
 
                 groupId = 'com.github.dantariun'
                 artifactId = 'DrawingMaskView'
-                version = '1.0.1'
+                version = '1.0.2'
             }
         }
     }
